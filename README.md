@@ -1,39 +1,70 @@
-# new-project
+#Learning Analytics:Learner Outcomes and Engagement Patterns
+#Author: Lavanya Vijayakumar
+#Date: 14/12/26
 
-Welcome to ProjectTemplate!
+#This project analyses learner behaviour data from seven runs of FutureLearn online course. The analysis follows the CRISP-DM framework to study learner outcomes and engagement patterns. 
+#The project is organised using the ProjectTemplate structure to ensure reproductibility.
 
-This file introduces you to ProjectTemplate, but you should eventually replace
-the contents of this file with an introduction to your project. People who
-work with your data in the future will thank you for it, including your future
-self.
+#The project addresses the following questions:
+ #1. How do learner outcomes(course completion, unenrolment, and certificate purchase) differ across course runs?
+ #2. At which stages of the course do learners disengage, and are these disengagement patterns consistent across runs?
 
-ProjectTemplate is an R package that helps you organize your statistical
-analysis projects. Since you're reading this file, we'll assume that you've
-already called `create.project()` to set up this project and all of its
-contents.
 
-To load your new project, you'll first need to `setwd()` into the directory
-where this README file is located. Then you need to run the following two
-lines of R code:
+#This file provides instructions on project setup and execution.
 
-	library('ProjectTemplate')
-	load.project()
+#Project setup:#
+ #The project uses ProjectTemplate system.
+ #All raw data are stored in the 'data' folder. 
+ #During knitting process the data are cached to the 'cache' folder.
+ #All data preprocessing steps are implemented as R scripts in the 'munge' folder.
+ #The main analysis and reporting are carried out using an R Markdown file located in the 'reports' folder.
+ #Various options are set using 'global.dcf' in the 'config' folder.
+ #For this project, munging is set to FALSE unless preprocessing scripts are modified, and load_libraries is set to TRUE.
 
-After you enter the second line of code, you'll see a series of automated
-messages as ProjectTemplate goes about doing its work. This work involves:
-* Reading in the global configuration file contained in `config`.
-* Loading any R packages you listed in the configuration file.
-* Reading in any datasets stored in `data` or `cache`.
-* Preprocessing your data using the files in the `munge` directory.
 
-Once that's done, you can execute any code you'd like. For every analysis
-you create, we'd recommend putting a separate file in the `src` directory.
-If the files start with the two lines mentioned above:
+#Project Execution:#
+  #clone the ProjectTemplate repository.
+ #To run the analysis, open the file anlaysis_report.Rmd, which is located in the 'reports' folder.
+ #Ensure that the project is opened using the .Rproj file so that the working directory is set correctly.
+ #Click 'Knit' in Rstudio to reproduce the full analysis and generate final report.
 
-	library('ProjectTemplate')
-	load.project()
+#Directory Map#
+ #The project follows the standard ProjectTemplate directory structure:
+ 
+  #cache-stores processed datasets and objects created using preprocessing.
+  
+  #config- contains the global.dcf file used to set project-wide options.
+  
+  #data- stores the raw datasets used in the analysis
+  
+  #diagnostics- currently unused.
+  
+  #docs- currently unused.
+  
+  #graphs-currently unused.
+  
+  #lib- currently unused.
+  
+  #logs- currently unused.
+  
+  #munge- Contains R scripts used for data cleaning and preprocessing.
+  
+  #profiling- currently unused
+  
+  #README.md- provides an overview of the projects and instructions for setup and execution.
+  
+  #renv- stores files required to manage package dependencies.
+  
+  #reports- Contains the main R Markdown file 'analysis_report.Rmd' and the knitted output.
+  
+  #src- Contains R scripts used to generate summary tables and figures.
+  
+  #tests- currently unused.
 
-You'll have access to all of your data, already fully preprocessed, and
-all of the libraries you want to use.
 
-For more details about ProjectTemplate, see http://projecttemplate.net
+
+
+
+
+
+ 
