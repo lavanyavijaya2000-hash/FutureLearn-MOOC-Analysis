@@ -20,7 +20,7 @@ load.project()
 
  Learning analytics examines learner behaviour data to understand participation, and outcomes in online courses. Understanding these patterns can help course teams analyse the course performance and identify areas where learner engagement may be improved.
  
- This report analyses data from seven runs of **FutureLearn course** using the CRISP-DM framework. The analysis is of two cycles, the first cycle examines the overall learner outcomes across course runs and the second cycle, analyses step-level engagement in order to identify where learners disengage during the course.
+ This report analyses data from seven runs of **FutureLearn course** using the CRISP-DM framework. The analysis is of two cycles, the first cycle identifies the overall learner outcomes across course runs and the second cycle, analyses step-level engagement in order to identify where learners disengage during the course.
  
  The report addresses the following research questions:
 
@@ -31,15 +31,15 @@ load.project()
 
 ## 2.1 Business Understanding:
 
-From a course delivery perspective, learner outcomes provide an overview of course effectiveness. Three outcomes are of interest to the stakeholders: if learners complete the course, number of unenrolment before completion, and if learners purchase a certificate. Differences in these outcomes across course runs may indicate variation in learner engagement or course delivery conditions.
+From a course delivery perspective, learner outcomes provide an overview of course effectiveness. The primary stakeholders for this analysis are the course delivery team and content designers at Newcastle University and FutureLearn and the secondary stakeholders include the FutureLearn platform team, who may use these insights to strengthen platform level engagement strategies. Three outcomes are of interest to the stakeholders: if learners complete the course, number of unenrolment before completion, and if learners purchase a certificate. All these three views are addressed in this report. Differences in these outcomes across course runs may indicate variation in learner engagement or course delivery conditions.
 
-In addition, examining certificate purchase among learners who complete the course provides insight into post-completion behaviour and conversion to paid certification.
+In addition, examining certificate purchase among learners who complete the course provides insight into post-completion behaviour and conversion to paid certification which is an important revenue source for the online course. The success of this analysis is defined by its ability to identify where disengagement occurs across course runs to strengthen the course structure.
 
 ## 2.2 Data Understanding:
 
-Cycle 1 uses learner level enrolment data from seven course runs. The dataset contains one record per learner per run, timestamps indicating course completion, unenrolment, and certificate purchase. Where timestamps are missing, the particular action is assumed not to have occured. These missing values therefore reflect learner behaviour rather than data quality issues.In total, the combined dataset includes thousands of learner records across all runs.
+Cycle 1 uses learner level enrolment data from seven course runs. The dataset contains one record per learner per run, timestamps indicating course completion, unenrolment, and certificate purchase. Where timestamps are missing, the particular action is assumed not to have occured. These missing values therefore reflect learner behaviour rather than data quality issues.In total, the combined dataset includes thousands of learner records across all runs. The data sets were generally of good quality, with limited and necessary preprocessing to standardise timestamps, handle missing values and avoid duplicate counting, No major inconsistencies were identified across the course runs.
 
-This analysis uses learner-level 'enrolments' data to identify completion, unenrolment, and certificate purchase outcomes across course runs. 'Step activity' data are included to examine how engagement changes across individual course steps and to identify points where leaner drop-off. Question response data are included to support learner-level analysis, while other datasets such as video statistics, archetype-survey responses, team members, leaving survey responses, sentiment data are excluded as they do not provide direct evidence of how learners progress through the course and disengagement across runs.
+This analysis uses learner-level 'enrolments' data to identify completion, unenrolment, and certificate purchase outcomes across course runs. 'Step activity' data are included to examine how engagement changes across individual course steps, and to identify where learner disengagement occurs, which helps in addressing the question of which stages of the course contribute most to learner unenrolment. Question response data required basic preprocessing, but they were excluded from further analysis as they did not support the identification of learner drop-off or progression across course steps, while other datasets such as video statistics, archetype-survey responses, team members, leaving survey responses, sentiment data are excluded as they do not provide direct evidence of how learners progress through the course and disengagement across runs.
 
                         
 ```{r Table1, echo=FALSE, results='asis'}
@@ -53,9 +53,9 @@ knitr::kable(
  
 ## 2.3 Data Preparation:
 
-Enrolment data from all the runs were combined into a single dataset, with the run number derived from the source files. Learner outcomes were summarised at the learner level to ensure each learner was counted once per run. Missing values and empty values were treated to reflect learner behaviour than data quality issues, with empty strings converted to missing values wherever needed. Timestamp variables were standardised to datetime format to enable consistent time-based analysis.
+Enrolment data from all the runs were combined into a single dataset, with the run number derived from the source files. Learner outcomes were summarised at the learner level to ensure each learner was counted once per run. Missing values and empty values were treated to reflect learner behaviour than data quality issues, with empty strings converted to missing values wherever needed. Timestamp variables were standardised to datetime format to enable consistent time-based analysis. 
 
-Completion, certificate purchase, and unenrolment were treated as binary outcomes, and summary statistics were calculated by run.
+Completion, certificate purchase, and unenrolment were treated as binary outcomes, and summary statistics were calculated for each run.
 
 ## 2.4 Modelling and Results
                       
@@ -66,7 +66,7 @@ ggplot(plot_data, aes(x= factor(run), y= percent, fill= outcomes))+
        y= "percentage of learners (%)",
        fill= "outcomes")
 ```
-Figure 1 shows the percentage of learners who completed the course, unenrolled, or purchased a certificate across the seven runs. Completion rates vary substantially between runs, ranging from approximately 0.5% to 12.5%. Run 1 records the highest completion rate at around 12.5% while few other runs show completion rates below 2%
+Figure 1 shows the percentage of learners who completed the course, unenrolled, or purchased a certificate across the seven runs. The percentage of Completion vary substantially between runs, ranging from approximately 0.5% to 12%. Run 1 records the highest completion rate at around 12% while few other runs show completion rates below 2%
 
 Unenrolment rates are consistently higher than completion rates. In some runs, unenrolment reaches approximately 18-19% indicating that a large proportion of learners disengage early. Certificate purchase rates remain low across all runs.
 
@@ -83,17 +83,17 @@ ggplot(completers_by_run, aes(x= factor(run),
 
 
 ```
-Figure 2 shows that certificate purchase among completers varies across runs, ranging from below 5% to above 10%. This indicate that completion increases the chances of certificate purchase, though the rate of conversion are not consistent across runs.
+Unlike figure 1, this plot considers only the learners who have completed the course and it can be seen that there is a clear variation in conversion from completion of the course to certificate purchase rates among learners across different runs. Some runs show relatively high purchase rates, while others have much lower, indicating inconsistent conversion from completion to purchase of certificate. This suggests that completing the course alone does not guarantee certificate purchase, and other factors such as learner intent, perceived value of the course may influence purchasing behaviour.
 
 ## 2.5 Evaluation
 
-Cycle 1 shows that learner outcomes differ across course runs. Completion rates vary by more than 10 percentage, while unenrolment remains high in all runs. Although certificate purchase is rare, the overall purchase rate among completers vary between runs. These findings suggest that overall outcomes alone do not explain learner behaviour and leads to further analysis to identify where disengagement occurs within the course.
+Cycle 1 shows how learner outcomes like completion, unenrolment and certificate purchase percentage differ across different course runs. Completion rates vary by more than 10 percentage, while unenrolment remains high in all runs. Although certificate purchase rates are low, the overall purchase rate among completers vary between runs which can be seen in Figure 2. These findings suggest that overall outcomes alone do not explain learner behaviour and leads to further analysis to identify where disengagement occurs since the unenrolment percentage can be seen consistently high across runs. This insight is particularly valuable to the stakeholders as it is important to identify which stages may be contributing most to learner drop-off to stregthen the course at that particular stage and increase learner retention.
 
 # 3. CRISP-DM Cycle 2 : Step-level Engagement and Disengagement
 
 ## 3.1 Business Understanding:
 
-While Cycle 1 identifies variation in learner outcomes, it does not indicate where learners disengage during the course. Identifying steps with low completion or sharp drop-off is important for understanding engagement and decide potential course redesign. Cycle 2 therefore focuses on step level learner activity. So, this cycle analysis, At which stages of the course do learners disengage, and are these patterns consistent across runs?
+While Cycle 1 identifies variation in learner outcomes, it does not indicate where learners disengage during the course. Identifying steps with low completion or sharp drop-off is important for understanding engagement and decide potential course redesign. Cycle 2 therefore focuses on step level learner activity. So, this cycle answers the question of, 'At which stages of the course do learners disengage, and are these patterns consistent across runs?'
 
 ## 3.2 Data Understanding:
 
@@ -101,7 +101,7 @@ Cycle 2 uses step-level activity data recording learner visits and completions f
 
 ## 3.3 Data Preparation:
 
-Step activity data from all runs were combined into a single dataset and ordered according to the course structure. For each step, the number of learners who visited and completed the step was calculated, along with their completion rate. Learner-level maximum step reached was also derived to support retention analysis.
+Step activity data from all runs were combined into a single dataset and ordered according to the course structure. For each step, the number of learners who visited and completed the step was calculated, along with their completion rate. Learner-level maximum step reached was also derived to support retention analysis.  As mentioned, the missing values and empty values were treated to reflect learner behaviour, with empty strings converted to missing values wherever needed.
 
 ## 3.4 Modelling and Results
 
@@ -126,7 +126,7 @@ ggplot(step_overall, aes(x = step_number, y = avg_completion_pct)) +
   )
 
 ```
-Figure 3 shows that completion increases after the first step and stays high for most of the course. Small dips at few steps indicate points where learners are most likely to disengage. In X axis the step number reflects the ordered learning sequence followed by the learners.
+Figure 3 shows that completion percentage increases after the first step and the completion level stays consistently high across the mid-course steps suggesting that once learners pass initial phase, they tend to progress consistently until the later stages. Small dips at few steps indicate points where learners are most likely to disengage. In X axis the step number reflects the ordered learning sequence followed by the learners. 
 
 
 
@@ -144,7 +144,7 @@ knitr::kable(
       
 
 
-Table 2 lists the lowest-completion steps by run, allowing direct comparison of problamatic stages across runs.
+Table 2 lists the steps that has lowest-completion percentage for each run, along with the week number and the percentage of completion for that particular step. Step 1 appears frequently among the lowest completion rate and the presence of Step 21 in the table, indicates that disengagement is not limited to initial stage alone, this table allows direct comparison of problamatic stages across runs.
 
 
 
@@ -160,9 +160,9 @@ ggplot(retention_curve, aes(x= max_step, y=active_pct, colour= factor(run)))+
   theme_minimal(base_size = 12)+
   theme(panel.grid.minor = element_blank())
 ```
-Figure 4 shows the retention curves for each run. In all runs, retention declines gradually rather than showing a single sharp drop. By later steps,the retention declines for all runs, and fewer than 40% of learners remain active in most of the runs in the later steps.
+Figure 4 shows the retention curves for each run. In all runs, retention declines gradually rather than showing a single sharp drop. By later steps,the retention declines for all runs, and fewer than 40% of learners remain active in most of the runs in the later steps. Despite this variation in steps, it can also be noticed that the shape of the retention curves is mostly similar across runs, indicating a consistent pattern of learner engagement throughout the course runs.
 
-```{r Figure5, fig.cap = "Stage where largest Single Step drop-off", fig.align='center', echo=FALSE, fig.width=6, fig.height=3}
+```{r Figure5, fig.align='center', echo=FALSE, fig.width=6, fig.height=3}
 ggplot(largest_drop_off_by_run, aes(x = factor(run), y = dropoff_pct)) +
   geom_point(size = 3) +
   geom_text(aes(label = step_number), vjust = -0.8, size = 3) +
@@ -172,18 +172,18 @@ ggplot(largest_drop_off_by_run, aes(x = factor(run), y = dropoff_pct)) +
   ) +
   theme_minimal()
 ```
-          
+   Figure 5:  "Stage where largest Single Step drop-off"       
 The Number above each point from scatter plot (Figure 5) represents the step where the biggest drop occurs. The plot shows the largest single step drop-off for each run.For most runs, the largest drop-off happens very early in the course, often around the first few steps. This highlights the need for early stage engagement. 
 
 
 ## 3.5 Evaluation:
 
-Overall, the results show that learners disengagement happens in two stages, an early loss (especially around Steps 1 and 2) followed by gradual attrition through the middle with second noticeable drop near the end of the course (around step 20/21)(From Figure 3 & 4). The plots suggest that the biggest risk points may be early commitment to the course, varied expectations. The second clear drop appears near the final steps of the course (eg step 21 from Figure 4 and Table 3)likely due to fatigue or reduced motivation rather than difficult as completion rate is high among the learners who stay active.
+Overall, the results show that learners disengagement happens in two stages, an early loss (especially around Steps 1 and 2) followed by gradual attrition through the middle with second noticeable drop near the end of the course (around step 20/21)(From Figure 3 & 4). The plots suggest that the biggest risk points may be early commitment to the course, varied expectations. The second clear drop appears near the final steps of the course (eg step 21 from Figure 4 and Table 3)likely due to fatigue or reduced motivation rather than difficultly as completion rate is high among the learners who stay active.
 
 ## 3.6 Deployment:
 
-The Stakeholders of the analysis will now have insights into learner engagement and drop-off behaviour at different stages of the course. These insights can be used to inform course design decisions, such as revising the steps where disengagement is observed consistently, and improving learner guidance during later stages of the course. In addition, this analysis can support future studies that explore how learners stay engaged and where they tend to drop out in online courses.
+The Stakeholders will now have insights about the unenrolment pattern of the learners, from the analysis into learner engagement and drop-off behaviour at different stages of the course. These insights can be used to inform course design decisions, such as revising the steps where disengagement is observed consistently, and the completion percentage is lower, by providing learner guidance during those stages of the course. In addition, this analysis can support future studies that explore how learners stay engaged and where they tend to drop out in online courses.
 
 ## 4.0 Final Recommendations and Conclusions:
 
-Based on these findings,the course should focus on strengthening the first few steps by making instructions clearer and setting expectations early to reduce the large initial drop-off. Short reminders, progress indicators, or early feedback could help the learners be engaged beyond step 2. Since many learners also leave near the final steps, giving motivation through encouragement messages, and highlighting how close the learners are to completion and the value of finishing the course near the end may improve retention. So, targeted support in the beginning and motivational nudge towards the end can help have the biggest impact on improving learner progression and completion.
+Based on these findings,the course should focus on strengthening the first few steps by making instructions clearer and setting expectations early to reduce the large initial drop-off. Short reminders, progress indicators, or early feedback could help the learners be engaged beyond step 2. Since many learners also drop-off near the final steps, giving motivation through encouragement messages, highlighting how close the learners are to completion and reinforcing the value of finishing the course near the end, may improve retention. So, targeted support in the beginning and motivational nudge towards the end can help have the biggest impact on improving learner progression and reducing the unenrolment rate across runs.
