@@ -39,7 +39,7 @@ In addition, examining certificate purchase among learners who complete the cour
 
 Cycle 1 uses learner level enrolment data from seven course runs. The dataset contains one record per learner per run, timestamps indicating course completion, unenrolment, and certificate purchase. Where timestamps are missing, the particular action is assumed not to have occured. These missing values therefore reflect learner behaviour rather than data quality issues.In total, the combined dataset includes thousands of learner records across all runs. The data sets were generally of good quality, with limited and necessary preprocessing to standardise timestamps, handle missing values and avoid duplicate counting, No major inconsistencies were identified across the course runs.
 
-This analysis uses learner-level 'enrolments' data to identify completion, unenrolment, and certificate purchase outcomes across course runs. 'Step activity' data are included to examine how engagement changes across individual course steps, and to identify where learner disengagement occurs, which helps in addressing the question of which stages of the course contribute most to learner unenrolment. Question response data required basic preprocessing, but they were excluded from further analysis as they did not support the identification of learner drop-off or progression across course steps, while other datasets such as video statistics, archetype-survey responses, team members, leaving survey responses, sentiment data are excluded as they do not provide direct evidence of how learners progress through the course and disengagement across runs.
+This analysis uses learner-level 'enrolments' data to identify completion, unenrolment, and certificate purchase outcomes across course runs. 'Step activity' data are included to examine how engagement changes across individual course steps, and to identify where learner disengagement occurs, which helps in addressing the question of which stages of the course contribute most to learner unenrolment. Question response data were reviewed and preprocessed butexcluded from further analysis as they did not support the identification of learner drop-off or progression across course steps. Other datasets such as video statistics, archetype-survey responses, team members, leaving survey responses, and sentiment data were also excluded as they do not provide direct evidence of how learners progress through the course and disengagement across runs.
 
                         
 ```{r Table1, echo=FALSE, results='asis'}
@@ -59,13 +59,15 @@ Completion, certificate purchase, and unenrolment were treated as binary outcome
 
 ## 2.4 Modelling and Results
                       
-```{r Figure1, fig.cap = "Learner outcomes by course run", fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}
+```{r Figure1, fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}
 ggplot(plot_data, aes(x= factor(run), y= percent, fill= outcomes))+
   geom_col(position="dodge")+
   labs(x="course run",
        y= "percentage of learners (%)",
        fill= "outcomes")
 ```
+Figure 1: Learner outcomes by course run
+
 Figure 1 shows the percentage of learners who completed the course, unenrolled, or purchased a certificate across the seven runs. The percentage of Completion vary substantially between runs, ranging from approximately 0.5% to 12%. Run 1 records the highest completion rate at around 12% while few other runs show completion rates below 2%
 
 Unenrolment rates are consistently higher than completion rates. In some runs, unenrolment reaches approximately 18-19% indicating that a large proportion of learners disengage early. Certificate purchase rates remain low across all runs.
@@ -74,7 +76,7 @@ Unenrolment rates are consistently higher than completion rates. In some runs, u
 
 
 
-```{r Figure2, fig.cap = "Certificate purchase rate among completers by course runs", fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}
+```{r Figure2, fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}
 ggplot(completers_by_run, aes(x= factor(run),
                             y= purchase_rate_among_completers)) +
   geom_col(fill= "steelblue")+
@@ -83,6 +85,8 @@ ggplot(completers_by_run, aes(x= factor(run),
 
 
 ```
+Figure 2: Certificate purchase rate among completers by course runs
+
 Unlike figure 1, this plot considers only the learners who have completed the course and it can be seen that there is a clear variation in conversion from completion of the course to certificate purchase rates among learners across different runs. Some runs show relatively high purchase rates, while others have much lower, indicating inconsistent conversion from completion to purchase of certificate. This suggests that completing the course alone does not guarantee certificate purchase, and other factors such as learner intent, perceived value of the course may influence purchasing behaviour.
 
 ## 2.5 Evaluation
@@ -105,7 +109,7 @@ Step activity data from all runs were combined into a single dataset and ordered
 
 ## 3.4 Modelling and Results
 
-```{r Figure3, fig.cap = "Average Completion percentage rate across step number", fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}          
+```{r Figure3, fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}          
 # step_summary already exists with completion_pct
 
 ggplot(step_overall, aes(x = step_number, y = avg_completion_pct)) +
@@ -126,6 +130,8 @@ ggplot(step_overall, aes(x = step_number, y = avg_completion_pct)) +
   )
 
 ```
+Figure 3: Average Completion percentage rate across step number
+
 Figure 3 shows that completion percentage increases after the first step and the completion level stays consistently high across the mid-course steps suggesting that once learners pass initial phase, they tend to progress consistently until the later stages. Small dips at few steps indicate points where learners are most likely to disengage. In X axis the step number reflects the ordered learning sequence followed by the learners. 
 
 
@@ -143,13 +149,12 @@ knitr::kable(
 ```
       
 
-
 Table 2 lists the steps that has lowest-completion percentage for each run, along with the week number and the percentage of completion for that particular step. Step 1 appears frequently among the lowest completion rate and the presence of Step 21 in the table, indicates that disengagement is not limited to initial stage alone, this table allows direct comparison of problamatic stages across runs.
 
 
 
 
-```{r Figure4, fig.cap = "Retention curve for each Run", fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}            
+```{r Figure4, fig.align='center', echo = FALSE, fig.width = 6, fig.height = 3}            
 ggplot(retention_curve, aes(x= max_step, y=active_pct, colour= factor(run)))+
   annotate("rect", xmin= 19.5, xmax = 21.5, ymin= -Inf, ymax= Inf, alpha =0.08)+
   geom_line(linewidth = 1, alpha= 0.9)+
@@ -160,7 +165,11 @@ ggplot(retention_curve, aes(x= max_step, y=active_pct, colour= factor(run)))+
   theme_minimal(base_size = 12)+
   theme(panel.grid.minor = element_blank())
 ```
+Figure 4:Retention curve for each Run
+
 Figure 4 shows the retention curves for each run. In all runs, retention declines gradually rather than showing a single sharp drop. By later steps,the retention declines for all runs, and fewer than 40% of learners remain active in most of the runs in the later steps. Despite this variation in steps, it can also be noticed that the shape of the retention curves is mostly similar across runs, indicating a consistent pattern of learner engagement throughout the course runs.
+
+
 
 ```{r Figure5, fig.align='center', echo=FALSE, fig.width=6, fig.height=3}
 ggplot(largest_drop_off_by_run, aes(x = factor(run), y = dropoff_pct)) +
